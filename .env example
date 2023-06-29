@@ -1,0 +1,2 @@
+VITE_APP_SUPABASE_URL= -- url to the supabase --
+VITE_APP_SUPABASE_ANON_KEY= -- supabase anon key --

@@ -1,0 +1,71 @@
+Project Definition:
+- VBA Code Library as the pureJS one that I had
+- destop first design, but viewable on mobile
+- use vue.js v3, use vite
+- use vue.js composition API
+- use tailwindcss + custom css where required
+- use supabase for storing the data (using common Project with dedicated table)
+- every entry in separate line in the table
+- user login, logout,
+- additional users only with admin permission (or maybe not at all at first)
+- no cookies, local storage to save the login status and relogin when required
+
+Test resolutions:
+- HD
+- Mobile, different versions
+- Wide HD
+
+Friday 10.06.2022
+- mobile layout with comboBox - DONE
+- responsive design for the icons after login - DONE
+- make responsive design for the header - DONE
+- modify the Footer - email under the name
+
+Saturday 04.06.2022
+- change the policies for loading - DONE
+- allow modification only for admin user - DONE
+- loading screen  - DONE
+- copy to Clipboard function - DONE
+- styling the add/edit window - DONE
+- buttons sizing redo
+- edit/delete buttons on the list - DONE
+- edit dialog - DONE
+- edit function - DONE
+- delete function - DONE
+- some messages system - tosters?
+
+Friday 03.06.2022
+- Load all items from supabase and populate the table - DONE
+- select item and populate the right panel - DONE
+- add new items to the tables - DONE
+- coloring the Code on load - DONE
+
+Tuesday 31.05.2022
+- Right panel layout, with icons - DONE
+- store - DONE
+- dialog template (backdrop, closing, state etc) - DONE
+- login dialog - DONE
+- add dialog - DONE
+
+
+ToDo:
+- basic layout
+- components layout:
+    - App:
+        - Header:
+            - Logo, title, ADD (Gray if not logged it, Green when logged in)
+        - Main Page (panels layout):
+            - selection panel,
+            - 
+        - Footer with credits
+    - Utilities components:
+        - login popup
+        - loading popup
+
+
+Done:
+- basic
+- footer component
+- Header layout component, without logic for login
+
+
