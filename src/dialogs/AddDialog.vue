@@ -22,6 +22,17 @@
         class="border-primary-dark border-2 rounded-md my-2 p-2"
         v-model="item.code"
       ></textarea>
+      <input
+        class="border-primary-dark border-2 rounded-md my-2 h-8 px-2"
+        :class="{ notValid: !tagsValid }"
+        type="text"
+        id="tagsInputElement"
+        title="snippet tags"
+        ref="tagsInputElement"
+        placeholder="snippet tags, starting with #, semicolon separated"
+        v-model="item.tags"
+      />
+      <tag-panel v-if="item.tags" :tags="tagList"></tag-panel>
       <div class="flex flex-row justify-end">
         <button
           class="mx-1 text-white font-bold bg-primary px-3 py-2 rounded-lg hover:bg-primary-light hover:text-text-light focus:outline-primary-dark scale-50 sm:scale-100 transition-scale hover:scale-105 duration-50 ease-in-out"
@@ -37,16 +48,25 @@
           Add item
         </button>
       </div>
+      <h6 class="text-left text-sm">Tags already defined:</h6>
+      <all-tags-panel @selected="tagFromPreselect" :tags="tagsList"></all-tags-panel>
     </form>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
 import { useStore } from "vuex";
 import { supabase } from "../supabase/init";
+import validateTags from "../utilities";
+import TagPanel from "../components/TagPanel.vue";
+import AllTagsPanel from "../components/AllTagsPanel.vue";
 
 export default {
+  components: {
+    TagPanel,
+    AllTagsPanel,
+  },
   setup() {
     const store = useStore();
     const item = ref({
@@ -54,6 +74,10 @@ export default {
       code: "",
       tags: "",
     });
+    const tagsValid = ref(true);
+    const tagsInputElement = ref(null);
+    const tagList = computed(() => item.value?.tags?.replace(/[\s+]/g, "").split(";"));
+    const tagsList = computed(() => Object.keys(store.getters.tags));
 
     async function addItem() {
       console.log("Trying to add item:" + item.value.title);
@@ -90,7 +114,34 @@ export default {
       store.dispatch("closeDialog");
     }
 
-    return { addItem, closeDialog, item };
+    function tagFromPreselect(tag) {
+      if (item.value.tags) {
+        item.value.tags += `; ${tag}`;
+      } else {
+        item.value.tags = `${tag}`;
+      }
+    }
+
+    watch(
+      () => item.value.tags,
+      (newValue, oldValue) => {
+        tagsValid.value = validateTags(newValue);
+        tagsInputElement.value.setCustomValidity(
+          tagsValid.value ? "" : "Check input, tags start with # and are ; separated"
+        );
+      }
+    );
+
+    return {
+      addItem,
+      closeDialog,
+      item,
+      tagsValid,
+      tagsInputElement,
+      tagList,
+      tagsList,
+      tagFromPreselect,
+    };
   },
 };
 </script>
@@ -110,5 +161,10 @@ textarea {
   overflow-x: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+.notValid {
+  border-color: red;
+  outline: 2px solid red;
 }
 </style>
