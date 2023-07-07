@@ -64,6 +64,20 @@ export default {
         if (error) throw error;
         store.dispatch("setItems", items);
         //console.log("items :>> ", items);
+        // recalculate the tags data?!
+        var tagsLib = {};
+        items.forEach((item) => {
+          //iterate through tags
+          const tagList = item.tags?.replace(/[\s+]/g, "").split(";");
+          tagList.forEach((tag) => {
+            if (!tagsLib[tag]) {
+              tagsLib[tag] = [];
+            }
+            //console.log("tagsLib :>> ", tagsLib);
+            tagsLib[tag].push(item.id);
+          });
+        });
+        store.dispatch("setTags", tagsLib);
         store.dispatch("ackRefresh");
         store.dispatch("closeDialog");
       } catch (error) {

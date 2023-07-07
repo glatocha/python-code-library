@@ -22,6 +22,14 @@
         class="border-primary-dark border-2 rounded-md my-2 p-2"
         v-model="item.code"
       ></textarea>
+      <input
+        class="border-primary-dark border-2 rounded-md my-2 h-8 px-2"
+        type="text"
+        id="name"
+        title="snippet tags"
+        placeholder="snippet tags"
+        v-model="item.tags"
+      />
       <div class="flex flex-row justify-end">
         <button
           class="mx-1 text-white font-bold bg-primary px-3 py-2 rounded-lg hover:bg-primary-light hover:text-text-light focus:outline-primary-dark scale-50 sm:scale-100 transition-scale hover:scale-105 duration-50 ease-in-out"

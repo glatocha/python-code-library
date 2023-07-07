@@ -30,30 +30,38 @@
         />
       </div>
     </div>
-    <code
-      id="code-listing"
-      class="h-full bg-gray-300 mx-2 mb-2 p-3 rounded-md box-border text-left"
-      v-html="code"
-    ></code>
+    <code class="h-full mx-2 p-2 rounded-md box-border text-left bg-background">
+      <highlightjs :code="code" />
+    </code>
+    <!-- <div class="h-12 flex flex-row items-center px-3 m-2 bg-background rounded-md justify-between">
+      <h2 class="hidden sm:block p-1 text-black font-bold">{{ item.tags }}</h2>
+    </div> -->
+    <tag-panel :tags="tagList"></tag-panel>
   </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { supabase } from "../supabase/init";
 import string2html from "../vba-formating";
 import SelectorDropDown from "./SelectorDropDown.vue";
+import hljsVuePlugin from "@highlightjs/vue-plugin";
+import TagPanel from "./TagPanel.vue";
 
 export default {
   components: {
     SelectorDropDown,
+    highlightjs: hljsVuePlugin.component,
+    TagPanel,
   },
   setup() {
     const store = useStore();
     const user = computed(() => store.getters.user);
     const item = computed(() => store.getters.selectedItem);
-    const code = computed(() => string2html(item.value.code));
+    const code = computed(() => item.value.code);
+    const tagList = computed(() => item.value?.tags?.replace(/[\s+]/g, "").split(";"));
+    // const code = computed(() => string2html(item.value.code));
 
     function copyToClipboard() {
       navigator.clipboard.writeText(item.value.code).then(
@@ -97,7 +105,7 @@ export default {
       }
     }
 
-    return { user, item, code, copyToClipboard, editItem, deleteItem };
+    return { user, item, tagList, code, copyToClipboard, editItem, deleteItem };
   },
 };
 </script>
@@ -106,18 +114,20 @@ export default {
 code {
   color: var(--code-color);
   font-family: "Source Code Pro", monospace;
+  /* background-color: #1c1b1b; */
   font-size: 0.7rem;
   line-height: 0.9rem;
   overflow-x: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
+  height: 100% !important;
 }
 
 code::selection,
 code:deep(::selection) {
   background-color: theme("colors.primary.light");
 }
-
+/* 
 code:deep(.code-keyword) {
   color: var(--code-keyword-color);
   font-weight: 600;
@@ -129,5 +139,5 @@ code:deep(.code-comment) {
 
 code:deep(.code-strLiteral) {
   color: var(--code-string-literal);
-}
+} */
 </style>

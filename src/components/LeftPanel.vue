@@ -7,30 +7,42 @@
         :key="index"
         @click="selectItem(item)"
       >
-        <span class="pl-0 group-hover:pl-2">{{ item.title }}</span>
+        <span
+          class="pl-0 group-hover:pl-2"
+          :class="{ searched: searchResults.includes(item.id) }"
+          >{{ item.title }}</span
+        >
       </li>
     </ul>
+    <tag-search-panel />
   </div>
 </template>
 
 <script>
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import TagSearchPanel from "./TagSearchPanel.vue";
 
 export default {
+  components: { TagSearchPanel },
   setup() {
     const store = useStore();
 
     const listOfItems = computed(() => store.getters.items);
+    const searchResults = computed(() => store.getters.searchResults);
     console.log("list :>> ", listOfItems);
 
     function selectItem(item) {
       store.dispatch("setSelectedItem", item);
     }
 
-    return { listOfItems, selectItem };
+    return { listOfItems, searchResults, selectItem };
   },
 };
 </script>
 
-<style></style>
+<style>
+.searched {
+  color: theme("colors.primary.light");
+}
+</style>

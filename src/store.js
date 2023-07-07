@@ -8,6 +8,9 @@ const Store = createStore({
       isAddDialogOpen: false, //true when the add edit dialog is open
       isEditDialogOpen: false, //true when the edit dialog is open
       items: null, //store all code snippets
+      tags: null, //object with keys - value pair, where the key is the TAG (with # and the value is a list of all items ID with that tag)
+      searchResults: [], //array of ID matching the TAG search
+      forcedTagSearch: null,
       selectedItem: {
         title: "Select snippet",
         code: "",
@@ -42,6 +45,15 @@ const Store = createStore({
     setItems(state, payload) {
       state.items = payload;
     },
+    setTags(state, payload) {
+      state.tags = payload;
+    },
+    setSearchResults(state, payload) {
+      state.searchResults = payload;
+    },
+    setForcedTagSearch(state, payload) {
+      state.forcedTagSearch = payload;
+    },
     setSelectedItem(state, payload) {
       state.selectedItem = payload;
     },
@@ -74,6 +86,15 @@ const Store = createStore({
     setItems(context, payload) {
       context.commit("setItems", payload);
     },
+    setTags(context, payload) {
+      context.commit("setTags", payload);
+    },
+    setSearchResults(context, payload) {
+      context.commit("setSearchResults", payload);
+    },
+    setForcedTagSearch(context, payload) {
+      context.commit("setForcedTagSearch", payload);
+    },
     setSelectedItem(context, payload) {
       context.commit("setSelectedItem", payload);
     },
@@ -102,6 +123,15 @@ const Store = createStore({
     },
     items(state) {
       return state.items;
+    },
+    tags(state) {
+      return state.tags;
+    },
+    forcedTagSearch(state) {
+      return state.forcedTagSearch;
+    },
+    searchResults(state) {
+      return state.searchResults;
     },
     selectedItem(state) {
       return state.selectedItem;
