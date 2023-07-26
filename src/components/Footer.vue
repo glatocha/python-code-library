@@ -31,7 +31,6 @@ setInterval(() => {
   if (counter > 11) {
     counter = 0;
   }
-  console.log("Footer loop - " + hljs_classes[counter]);
   hljs_class.value = hljs_classes[counter];
 }, 1000);
 </script>
